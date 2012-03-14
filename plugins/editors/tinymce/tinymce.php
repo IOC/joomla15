@@ -234,6 +234,9 @@ class plgEditorTinymce extends JPlugin
 			$buttons4[]	= 'selectall,|';
 		}
 
+        $paste_preprocess = 'paste_preprocess: function(pl, o) {'
+                    . 'if (/<img[^>]+src="data:/.test(o.content)) {o.content = "";}},';
+
 		// search & replace
 		$searchreplace		=  $this->params->def('searchreplace', 1);
 
@@ -502,6 +505,7 @@ class plgEditorTinymce extends JPlugin
 				$return = $load .
 				"\t<script type=\"text/javascript\">
 				tinyMCE.init({
+					$paste_preprocess
 					// General
 					directionality: \"$text_direction\",
 					editor_selector : \"mce_editable\",
@@ -532,6 +536,7 @@ class plgEditorTinymce extends JPlugin
 				$return = $load .
 				"\t<script type=\"text/javascript\">
 				tinyMCE.init({
+					$paste_preprocess
 					// General
 					directionality: \"$text_direction\",
 					editor_selector : \"mce_editable\",
@@ -572,6 +577,7 @@ class plgEditorTinymce extends JPlugin
 				$return = $load .
 				"\t<script type=\"text/javascript\">
 				tinyMCE.init({
+					$paste_preprocess
 					// General
 					$dialog_type
 					directionality: \"$text_direction\",
