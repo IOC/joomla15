@@ -1,0 +1,7 @@
+.htaccess
+/logs
+/tmp
+.buildpath
+.project
+.settings
+/nbproject
