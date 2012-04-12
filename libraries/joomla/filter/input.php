@@ -73,7 +73,6 @@ class JFilterInput extends JObject
 		'head',
 		'html',
 		'id',
-		'iframe',
 		'ilayer',
 		'layer',
 		'link',
