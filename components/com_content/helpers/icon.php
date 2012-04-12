@@ -142,12 +142,12 @@ class JHtmlIcon
 
 		// checks template image directory for image, if non found default are loaded
 		if ($params->get('show_icons')) {
-			$text = JHtml::_('image', 'system/printButton.png', JText::_('JGLOBAL_PRINT'), NULL, true);
+			$text = JHtml::_('image', 'system/printButton.png', JText::sprintf('JGLOBAL_PRINT_ART', $article->title), NULL, true);
 		} else {
-			$text = JText::_('JGLOBAL_ICON_SEP') .'&#160;'. JText::_('JGLOBAL_PRINT') .'&#160;'. JText::_('JGLOBAL_ICON_SEP');
+			$text = JText::_('JGLOBAL_ICON_SEP') .'&#160;'. JText::sprintf('JGLOBAL_PRINT_ART', $article->title) .'&#160;'. JText::_('JGLOBAL_ICON_SEP');
 		}
 
-		$attribs['title']	= JText::_('JGLOBAL_PRINT');
+		$attribs['title']	= JText::sprintf('JGLOBAL_PRINT_ART', $article->title);
 		$attribs['onclick'] = "window.open(this.href,'win2','".$status."'); return false;";
 		$attribs['rel']		= 'nofollow';
 
