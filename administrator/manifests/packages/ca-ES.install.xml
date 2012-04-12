@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<extension type="package" version="1.7">
+<name>Catalan Language Pack</name>
+<packagename>ca-ES</packagename>
+<version>2.5.x</version>
+<url>http://www.catmidia.cat</url>
+<packager></packager>
+<packagerurl></packagerurl>
+<description>Joomla 2.5 catalan language package</description>
+<files>
+        <file type="language" client="site" id="ca-ES">site_ca-ES.zip</file>
+        <file type="language" client="admin" id="ca-ES">admin_ca-ES.zip</file>
+</files>
+</extension>
