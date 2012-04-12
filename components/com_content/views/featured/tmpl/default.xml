@@ -11,6 +11,25 @@
 
 <!-- Add fields to the parameters object for the layout. -->
 <fields name="params">
+<fieldset name="advanced" addfieldpath="/administrator/components/com_content/models/fields" label="COM_MENUS_LAYOUT_FEATURED_OPTIONS">
+			<field
+			name="id_category"
+			type="category"
+			extension="com_content"
+			multiple="false"
+			size="10"
+			default=""
+			label="Categoria Matrícules"
+			description="Categoría de Notícies de matrícula"
+			/>
+
+            <field name="id"
+            type="modal_article"
+            default=""
+            label="Selecciona el calendari"
+            description="Article on es troba el calendari de matrícula"
+            />
+</fieldset>
 <fieldset name="advanced" label="COM_MENUS_LAYOUT_FEATURED_OPTIONS">
 			<field
 			name="featured_categories"
