@@ -36,6 +36,8 @@ class ContentViewFeatured extends JViewLegacy
 		$user = JFactory::getUser();
 		$app = JFactory::getApplication();
 
+		$article	=& $this->get('Matricula');
+
 		$state 		= $this->get('State');
 		$items 		= $this->get('Items');
 		$pagination	= $this->get('Pagination');
@@ -132,6 +134,7 @@ class ContentViewFeatured extends JViewLegacy
 		$this->assignRef('items', $items);
 		$this->assignRef('pagination', $pagination);
 		$this->assignRef('user', $user);
+		$this->assignRef('article', $article);
 
 		$this->_prepareDocument();
 

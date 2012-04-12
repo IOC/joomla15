@@ -135,4 +135,43 @@ class ContentModelFeatured extends ContentModelArticles
 
 		return $query;
 	}
+
+	//Funcio que ens retorna els articles amb les noticies de matricula
+	function getMatricula()
+	{
+            $params = clone $this->getState('params');
+		    $id_category = $params->get('id_category');
+		    $id_calendar = $params->get('id');
+
+            $query = 'SELECT title'.
+                        ' FROM #__categories'.
+                        ' WHERE id ='.(int) $id_category;
+            $Arows = $this->_getList($query);
+
+            //Agafem l'unic element
+            $categoria = array_pop($Arows);
+
+            $query = 'SELECT id, title, created, modified'.
+                        ' FROM #__content'.
+                        ' WHERE state = 1'.
+                        ' AND catid ='. (int) $id_category .
+                        ' ORDER BY ordering ASC';
+            $articles = $this->_getList($query);
+
+            $cat = new stdClass();
+            $cat->calendar = $id_calendar;
+            $cat->title = $categoria->title;
+            $cat->data = array();
+            foreach ($articles as $art){
+                $cat->data[$art->id] = new stdClass();
+                $cat->data[$art->id]->title = $art->title;
+                if (intval($art->modified) != 0){
+                    $modified = $art->modified;
+                }else{
+                    $modified = $art->created;
+                }
+                $cat->data[$art->id]->modified = $modified;
+            }
+            return $cat;
+	}
 }

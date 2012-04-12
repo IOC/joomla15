@@ -710,12 +710,12 @@ abstract class JFactory
 			{
 				header('HTTP/1.1 500 Internal Server Error');
 			}
-			jexit('Database Error: ' . (string) $db);
+			jexit('Per problemes t&egrave;cnics, el lloc web de l\'IOC no est&agrave; disponible. Disculpeu les mol&egrave;sties.');
 		}
 
 		if ($db->getErrorNum() > 0)
 		{
-			die(sprintf('Database connection error (%d): %s', $db->getErrorNum(), $db->getErrorMsg()));
+			die('Per problemes t&egrave;cnics, el lloc web de l\'IOC no est&agrave; disponible. Disculpeu les mol&egrave;sties.');
 		}
 
 		$db->setDebug($debug);
