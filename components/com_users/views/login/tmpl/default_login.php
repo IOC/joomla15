@@ -32,8 +32,15 @@ JHtml::_('behavior.keepalive');
 	<?php if (($this->params->get('logindescription_show') == 1 && str_replace(' ', '', $this->params->get('login_description')) != '') || $this->params->get('login_image') != '') : ?>
 	</div>
 	<?php endif ; ?>
-
-	<form action="<?php echo JRoute::_('index.php?option=com_users&task=user.login'); ?>" method="post">
+	<?php
+	$uri = JURI::root();
+	$path = JURI::root(true);
+	if (!empty($path)){
+        $uri = str_replace($path.'/', '', $uri);
+	}
+	$uri = str_replace('http:', 'https:', $uri);
+	?>
+	<form action="<?php echo $uri.JRoute::_('index.php?option=com_users&task=user.login'); ?>" method="post">
 
 		<fieldset>
 			<?php foreach ($this->form->getFieldset('credentials') as $field): ?>
