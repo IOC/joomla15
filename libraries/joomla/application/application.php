@@ -24,23 +24,13 @@ jimport('joomla.environment.response');
  * @subpackage  Application
  * @since       11.1
  */
-
-class JApplication extends JObject
+class JApplication extends JApplicationBase
 {
 	/**
 	 * The client identifier.
 	 *
 	 * @var    integer
 	 * @since  11.1
-	 */
-	protected $clientId = null;
-
-	/**
-	 * The client identifier.
-	 *
-	 * @var    integer
-	 * @since  11.1
-	 * @deprecated use $clientId or declare as private
 	 */
 	protected $_clientId = null;
 
@@ -50,15 +40,6 @@ class JApplication extends JObject
 	 * @var    array
 	 * @since  11.1
 	 */
-	protected $messageQueue = array();
-
-	/**
-	 * The application message queue.
-	 *
-	 * @var    array
-	 * @since  11.1
-	 * @deprecated use $messageQueue or declare as private
-	 */
 	protected $_messageQueue = array();
 
 	/**
@@ -66,15 +47,6 @@ class JApplication extends JObject
 	 *
 	 * @var    array
 	 * @since  11.1
-	 */
-	protected $name = null;
-
-	/**
-	 * The name of the application.
-	 *
-	 * @var    array
-	 * @since  11.1
-	 * @deprecated use $name or declare as private
 	 */
 	protected $_name = null;
 
@@ -101,14 +73,6 @@ class JApplication extends JObject
 	 * @since  11.1
 	 */
 	public $startTime = null;
-
-	/**
-	 * The application input object.
-	 *
-	 * @var    JInput
-	 * @since  11.2
-	 */
-	public $input = null;
 
 	/**
 	 * @var    array  JApplication instances container.
@@ -143,11 +107,7 @@ class JApplication extends JObject
 			$config['session'] = true;
 		}
 
-		// Create the input object
-		if (class_exists('JInput'))
-		{
-			$this->input = new JInput;
-		}
+		$this->input = new JInput;
 
 		// Set the session default name.
 		if (!isset($config['session_name']))
@@ -172,6 +132,8 @@ class JApplication extends JObject
 		{
 			$this->_createSession(self::getHash($config['session_name']));
 		}
+
+		$this->loadDispatcher();
 
 		$this->set('requestTime', gmdate('Y-m-d H:i'));
 
@@ -213,7 +175,7 @@ class JApplication extends JObject
 				return $error;
 			}
 
-			self::$instances[$client] = &$instance;
+			self::$instances[$client] = $instance;
 		}
 
 		return self::$instances[$client];
@@ -345,20 +307,6 @@ class JApplication extends JObject
 	}
 
 	/**
-	 * Exit the application.
-	 *
-	 * @param   integer  $code  Exit code
-	 *
-	 * @return  void     Exits the application.
-	 *
-	 * @since    11.1
-	 */
-	public function close($code = 0)
-	{
-		exit($code);
-	}
-
-	/**
 	 * Redirect to another URL.
 	 *
 	 * Optionally enqueues a message in the system message queue (which will be displayed
@@ -390,9 +338,11 @@ class JApplication extends JObject
 		$url = preg_split("/[\r\n]/", $url);
 		$url = $url[0];
 
-		// If we don't start with a http we need to fix this before we proceed.
-		// We could validly start with something else (e.g. ftp), though this would
-		// be unlikely and isn't supported by this API.
+		/*
+		 * If we don't start with a http we need to fix this before we proceed.
+		 * We could validly start with something else (e.g. ftp), though this would
+		 * be unlikely and isn't supported by this API.
+		 */
 		if (!preg_match('#^http#i', $url))
 		{
 			$uri = JURI::getInstance();
@@ -444,7 +394,7 @@ class JApplication extends JObject
 				echo '<html><head><meta http-equiv="content-type" content="text/html; charset=' . $document->getCharset() . '" />'
 					. '<script>document.location.href=\'' . htmlspecialchars($url) . '\';</script></head></html>';
 			}
-			elseif (!$moved and $navigator->isBrowser('konqueror'))
+			elseif (!$moved && $navigator->isBrowser('konqueror'))
 			{
 				// WebKit browser (identified as konqueror by Joomla!) - Do not use 303, as it causes subresources
 				// reload (https://bugs.webkit.org/show_bug.cgi?id=38690)
@@ -638,39 +588,6 @@ class JApplication extends JObject
 	}
 
 	/**
-	 * Registers a handler to a particular event group.
-	 *
-	 * @param   string  $event    The event name.
-	 * @param   mixed   $handler  The handler, a function or an instance of a event object.
-	 *
-	 * @return  void
-	 *
-	 * @since   11.1
-	 */
-	public static function registerEvent($event, $handler)
-	{
-		$dispatcher = JDispatcher::getInstance();
-		$dispatcher->register($event, $handler);
-	}
-
-	/**
-	 * Calls all handlers associated with an event group.
-	 *
-	 * @param   string  $event  The event name.
-	 * @param   array   $args   An array of arguments.
-	 *
-	 * @return  array  An array of results from each function call.
-	 *
-	 * @since   11.1
-	 */
-	public function triggerEvent($event, $args = null)
-	{
-		$dispatcher = JDispatcher::getInstance();
-
-		return $dispatcher->trigger($event, $args);
-	}
-
-	/**
 	 * Login authentication function.
 	 *
 	 * Username and encoded password are passed the onUserLogin event which
@@ -699,8 +616,8 @@ class JApplication extends JObject
 
 		if ($response->status === JAuthentication::STATUS_SUCCESS)
 		{
-			// validate that the user should be able to login (different to being authenticated)
-			// this permits authentication plugins blocking the user
+			// Validate that the user should be able to login (different to being authenticated)
+			// This permits authentication plugins blocking the user
 			$authorisations = $authenticate->authorise($response, $options);
 			foreach ($authorisations as $authorisation)
 			{
@@ -751,12 +668,11 @@ class JApplication extends JObject
 				// Set the remember me cookie if enabled.
 				if (isset($options['remember']) && $options['remember'])
 				{
-					jimport('joomla.utilities.simplecrypt');
-
 					// Create the encryption key, apply extra hardening using the user agent string.
-					$key = self::getHash(@$_SERVER['HTTP_USER_AGENT']);
+					$privateKey = self::getHash(@$_SERVER['HTTP_USER_AGENT']);
 
-					$crypt = new JSimpleCrypt($key);
+					$key = new JCryptKey('simple', $privateKey, $privateKey);
+					$crypt = new JCrypt(new JCryptCipherSimple, $key);
 					$rcookie = $crypt->encrypt(serialize($credentials));
 					$lifetime = time() + 365 * 24 * 60 * 60;
 
@@ -1045,7 +961,7 @@ class JApplication extends JObject
 
 		$session = JFactory::getSession($options);
 
-		//TODO: At some point we need to get away from having session data always in the db.
+		// TODO: At some point we need to get away from having session data always in the db.
 
 		$db = JFactory::getDBO();
 
@@ -1060,12 +976,13 @@ class JApplication extends JObject
 				->where($query->qn('time') . ' < ' . $query->q((int) ($time - $session->getExpire())));
 
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 		}
 
 		// Check to see the the session already exists.
-		if (($this->getCfg('session_handler') != 'database' && ($time % 2 || $session->isNew()))
-			|| ($this->getCfg('session_handler') == 'database' && $session->isNew()))
+		$handler = $this->getCfg('session_handler');
+		if (($handler != 'database' && ($time % 2 || $session->isNew()))
+			|| ($handler == 'database' && $session->isNew()))
 		{
 			$this->checkSession();
 		}
@@ -1124,7 +1041,7 @@ class JApplication extends JObject
 			}
 
 			// If the insert failed, exit the application.
-			if (!$db->query())
+			if (!$db->execute())
 			{
 				jexit($db->getErrorMSG());
 			}
