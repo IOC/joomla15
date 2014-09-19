@@ -77,4 +77,15 @@ class AttachmentsJavascript
 		echo '<script>var myparent = window.parent; window.parent.SqueezeBox.close(); myparent.location.reload();</script>';
 	}
 
+	/**
+	 * Insert the file's link
+	 */
+	public static function insertLink() {
+		echo "<script type=\"text/javascript\">
+			function insertAttachmentsLink(editor, url, filename) {
+				jInsertEditorText('<a href=\"' + url + '\">' + filename + '</a>', editor);
+			}
+			</script>";
+	}
+
 }
