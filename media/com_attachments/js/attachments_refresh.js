@@ -46,3 +46,7 @@ function refreshAttachments(siteUrl, ptype, pentity, pid, from) {
 
         }}).send();
 };
+
+function insertAttachmentsLink(editor, url, filename) {
+    jInsertEditorText('<a href="' + url + '">' + filename + '</a>', editor);
+}

@@ -76,5 +76,4 @@ class AttachmentsJavascript
 	{
 		echo '<script>var myparent = window.parent; window.parent.SqueezeBox.close(); myparent.location.reload();</script>';
 	}
-
 }
