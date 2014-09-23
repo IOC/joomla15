@@ -1,6 +1,6 @@
 /**
  * Define Javascript function for refreshing attachments lists
- * 
+ *
  * Copyright (C) 2010-2012 Jonathan M. Cameron, All Rights Reserved
  * License: http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL
  *
@@ -27,14 +27,17 @@ function refreshAttachments(siteUrl, ptype, pentity, pid, from) {
         id = "attachmentsList_" + ptype + "_default_" + pid;
         alist = window.parent.document.getElementById(id);
         }
-    var a = new Request({ 
+    if ( !alist) {
+        alist = window.parent.document.getElementsByClassName('attachmentsList')[0];
+        }
+    var a = new Request({
         url: url,
-        method: 'get', 
-        onComplete: function( response ) {  
-            
+        method: 'get',
+        onComplete: function( response ) {
+
             // Refresh the attachments list
             alist.innerHTML = response;
-            
+
 	    // Remove any old click events (since they are for a deleted/updated SqueezeBox)
             $$('a.modal-button').removeEvents('click');
 
