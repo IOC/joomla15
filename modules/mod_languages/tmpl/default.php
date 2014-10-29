@@ -17,6 +17,7 @@ JHtml::_('stylesheet', 'mod_languages/template.css', array(), true);
 
 <?php if ($params->get('dropdown', 1)) : ?>
 	<form name="lang" method="post" action="<?php echo htmlspecialchars(JURI::current()); ?>">
+	<span class="lang-icon"></span>
 	<select class="inputbox" onchange="document.location.replace(this.value);" >
 	<?php foreach($list as $language):?>
 		<option dir=<?php echo JLanguage::getInstance($language->lang_code)->isRTL() ? '"rtl"' : '"ltr"'?> value="<?php echo $language->link;?>" <?php echo $language->active ? 'selected="selected"' : ''?>>
@@ -29,16 +30,20 @@ JHtml::_('stylesheet', 'mod_languages/template.css', array(), true);
 	<?php foreach($list as $language):?>
 		<?php if ($params->get('show_active', 0) || !$language->active):?>
 			<li class="<?php echo $language->active ? 'lang-active' : '';?>" dir="<?php echo JLanguage::getInstance($language->lang_code)->isRTL() ? 'rtl' : 'ltr' ?>">
-			<?php if (!$language->active) { ?>
+			<?php if ($language->active) { ?>
+				<span>
+			<?php } else { ?>
 				<a href="<?php echo $language->link;?>">
 			<?php } ?>
 			<?php if ($params->get('image', 1)):?>
 				<?php echo JHtml::_('image', 'mod_languages/'.$language->image.'.gif', $language->title_native, array('title'=>$language->title_native), true);?>
-				<?php echo $params->get('full_name', 1) ? $language->title_native : strtoupper($language->sef);?>
+				<?php echo $params->get('full_name', 1) ? $language->title_native : $language->sef;?>
 			<?php else : ?>
-				<?php echo $params->get('full_name', 1) ? $language->title_native : strtoupper($language->sef);?>
+				<?php echo $params->get('full_name', 1) ? $language->title_native : $language->sef;?>
 			<?php endif; ?>
-			<?php if (!$language->active) { ?>
+			<?php if ($language->active) { ?>
+				</span>
+			<?php } else { ?>
 				</a>
 			<?php } ?>
 			</li>
