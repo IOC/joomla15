@@ -133,7 +133,7 @@ class JUpdaterCollection extends JUpdateAdapter
 					}
 				}
 				$client = JApplicationHelper::getClientInfo($attrs['CLIENT'], 1);
-				$attrs['CLIENT_ID'] = $client->id;
+				$attrs['CLIENT_ID'] = isset($client->id)?$client->id:false;
 				// Lower case all of the fields
 				foreach ($attrs as $key => $attr)
 				{
