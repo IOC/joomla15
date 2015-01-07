@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<install version="2.5" client="site" type="language" method="upgrade">
+<extension version="2.5" client="site" type="language" method="upgrade">
     <name>Catalan (Català - ca_ES)</name>
     <tag>ca-ES</tag>
-    <version>2.5.1</version>
-    <creationDate>2012-02-26</creationDate>
-    <author>Equip Transifex CATMidia.CAT</author>
-    <authorEmail>el.libre@gmail.com</authorEmail>
+    <version>2.5.28.1</version>
+    <creationDate>2014-12-12</creationDate>
+    <author>Catalan translation team</author>
+    <authorEmail>el.libre@tradu.cat</authorEmail>
     <authorUrl>www.catmidia.cat</authorUrl>
-    <copyright>Copyright (C) 2005 - 2011 Open Source Matters. All rights reserved.</copyright>
+    <copyright>Copyright (C) 2005 - 2014 Open Source Matters. All rights reserved.</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <description>Catalan language pack for Joomla! 2.5 - Site - Paquet d`idioma català per Joomla 2.5 - Lloc Web (FrontEnd) Fet per www.catmidia.cat</description>
     	<files>
@@ -90,5 +90,5 @@
 		<filename>ca-ES.tpl_beez5.sys.ini</filename>
         <filename file="meta">ca-ES.xml</filename>
 	</files>
-</install>
+</extension>
 
