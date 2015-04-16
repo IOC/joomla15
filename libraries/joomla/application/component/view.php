@@ -360,7 +360,7 @@ class JView extends JObject
 	 *
 	 * @since   11.1
 	 */
-	public function get($property, $default = null)
+	public function &get($property, $default = null)
 	{
 
 		// If $model is null we use the default model
