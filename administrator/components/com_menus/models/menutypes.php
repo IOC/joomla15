@@ -108,7 +108,7 @@ class MenusModelMenutypes extends JModelLegacy
 		$options = array();
 
 		// Attempt to load the xml file.
-		if (!$xml = simplexml_load_file($file)) {
+		if (!$xml = simplexml_load_string(file_get_contents($file))) {
 			return false;
 		}
 
@@ -198,7 +198,7 @@ class MenusModelMenutypes extends JModelLegacy
 
 				if (is_file($file)) {
 					// Attempt to load the xml file.
-					if ($xml = simplexml_load_file($file)) {
+					if ($xml = simplexml_load_string(file_get_contents($file))) {
 						// Look for the first view node off of the root node.
 						if ($menu = $xml->xpath('view[1]')) {
 							$menu = $menu[0];
@@ -340,7 +340,7 @@ class MenusModelMenutypes extends JModelLegacy
 				// Load layout metadata if it exists.
 				if (is_file($file)) {
 					// Attempt to load the xml file.
-					if ($xml = simplexml_load_file($file)) {
+					if ($xml = simplexml_load_string(file_get_contents($file))) {
 						// Look for the first view node off of the root node.
 						if ($menu = $xml->xpath('layout[1]')) {
 							$menu = $menu[0];

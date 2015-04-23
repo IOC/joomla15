@@ -279,7 +279,7 @@ class TemplatesModelStyle extends JModelAdmin
 			$path	= JPath::clean($client->path.'/templates/'.$table->template.'/templateDetails.xml');
 
 			if (file_exists($path)) {
-				$this->_cache[$pk]->xml = simplexml_load_file($path);
+				$this->_cache[$pk]->xml = simplexml_load_string(file_get_contents($path));
 			}
 			else {
 				$this->_cache[$pk]->xml = null;
@@ -343,7 +343,7 @@ class TemplatesModelStyle extends JModelAdmin
 		}
 
 		// Attempt to load the xml file.
-		if (!$xml = simplexml_load_file($formFile)) {
+		if (!$xml = simplexml_load_string(file_get_contents($formFile))) {
 			throw new Exception(JText::_('JERROR_LOADFILE_FAILED'));
 		}
 

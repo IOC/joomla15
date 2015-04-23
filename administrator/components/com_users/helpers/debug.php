@@ -88,7 +88,7 @@ class UsersHelperDebug
 			$filename = JPATH_ADMINISTRATOR.'/components/com_config/models/forms/application.xml';
 
 			if (is_file($filename)) {
-				$xml = simplexml_load_file($filename);
+				$xml = simplexml_load_string(file_get_contents($filename));
 
 				foreach($xml->children()->fieldset as $fieldset)
 				{

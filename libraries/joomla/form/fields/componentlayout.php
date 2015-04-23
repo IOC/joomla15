@@ -146,7 +146,7 @@ class JFormFieldComponentLayout extends JFormField
 				foreach ($component_layouts as $i => $file)
 				{
 					// Attempt to load the XML file.
-					if (!$xml = simplexml_load_file($file))
+					if (!$xml = simplexml_load_string(file_get_contents($file)))
 					{
 						unset($component_layouts[$i]);
 

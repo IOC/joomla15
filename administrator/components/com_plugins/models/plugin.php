@@ -249,7 +249,7 @@ class PluginsModelPlugin extends JModelAdmin
 		}
 
 		// Attempt to load the xml file.
-		if (!$xml = simplexml_load_file($formFile)) {
+		if (!$xml = simplexml_load_string(file_get_contents($formFile))) {
 			throw new Exception(JText::_('JERROR_LOADFILE_FAILED'));
 		}
 

@@ -934,9 +934,8 @@ class MenusModelItem extends JModelAdmin
 			if ($form->loadFile($formFile, true, '/metadata') == false) {
 				throw new Exception(JText::_('JERROR_LOADFILE_FAILED'));
 			}
-
 			// Attempt to load the xml file.
-			if (!$xml = simplexml_load_file($formFile)) {
+			if (!$xml = simplexml_load_string(file_get_contents($formFile))) {
 				throw new Exception(JText::_('JERROR_LOADFILE_FAILED'));
 			}
 
@@ -953,8 +952,7 @@ class MenusModelItem extends JModelAdmin
 
 
 			// Attempt to load the xml file.
-
-			if ($xmlFile && !$xml = simplexml_load_file($xmlFile))
+			if ($xmlFile && !$xml = simplexml_load_string(file_get_contents($xmlFile)))
 			{
 
 				throw new Exception(JText::_('JERROR_LOADFILE_FAILED'));

@@ -129,7 +129,7 @@ class ModulesModelPositions extends JModelList
 
 				if (file_exists($path))
 				{
-					$xml = simplexml_load_file($path);
+					$xml = simplexml_load_string(file_get_contents($path));
 					if (isset($xml->positions[0]))
 					{
 						$lang->load('tpl_'.$template->element.'.sys', $client->path, null, false, true)

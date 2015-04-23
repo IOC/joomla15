@@ -122,7 +122,7 @@ class ModulesModelSelect extends JModelList
 		foreach ($items as &$item) {
 			$path = JPath::clean($client->path.'/modules/'.$item->module.'/'.$item->module.'.xml');
 			if (file_exists($path)) {
-				$item->xml = simplexml_load_file($path);
+				$item->xml = simplexml_load_string(file_get_contents($path));
 			} else {
 				$item->xml = null;
 			}
