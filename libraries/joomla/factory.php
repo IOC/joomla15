@@ -447,16 +447,19 @@ abstract class JFactory
 		if (empty($xml))
 		{
 			// There was an error
-			JError::raiseWarning(100, JText::_('JLIB_UTIL_ERROR_XML_LOAD'));
+			JLog::add('Failed loading XML file', JLog::WARNING, 'jerror');
+			JError::raise(E_WARNING, 100, 'Failed loading XML file');
 
 			if ($isFile)
 			{
-				JError::raiseWarning(100, $data);
+				JLog::add($data, JLog::WARNING, 'jerror');
+				JError::raise(E_WARNING, 100, $data);
 			}
 
 			foreach (libxml_get_errors() as $error)
 			{
-				JError::raiseWarning(100, 'XML: ' . $error->message);
+				JLog::add($error->message, JLog::WARNING, 'jerror');
+				JError::raise(E_WARNING, 100, 'XML: ' . $error->message);
 			}
 		}
 
